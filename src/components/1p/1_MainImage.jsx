@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 const MainImage = () => {
   const [scale, setScale] = useState(1);
@@ -37,16 +38,18 @@ const MainImage = () => {
           paddingBottom: "0px",
         }}
       >
-        <img
-          src={isMobile ? "/1p/1mainm.png" : "/1p/1main.png"}
-          alt="2페이지 메인 이미지"
-          className="object-cover"
-          style={{
-            width: isMobile ? "500px" : "100%",
-            height: isMobile ? "400px" : "auto",
-            maxWidth: "1920px",
-          }}
-        />
+        <Link to="/5page">
+          <img
+            src={isMobile ? "/1p/1mainm.png" : "/1p/1main.png"}
+            alt="2페이지 메인 이미지"
+            className="object-cover"
+            style={{
+              width: isMobile ? "500px" : "100%",
+              height: isMobile ? "400px" : "auto",
+              maxWidth: "1920px",
+            }}
+          />
+        </Link>
       </div>
     </div>
   );

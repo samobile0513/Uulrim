@@ -13,35 +13,25 @@ export const ScaleContext = createContext();
 const Navigation = ({ isMobileNav, mobileScale, scrollContainerRef }) => {
   const [isScrolled, setIsScrolled] = useState(false);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const width = window.innerWidth;
+useEffect(() => {
+  const handleScroll = () => {
+    const scrollTop =
+      scrollContainerRef.current?.scrollTop ?? window.scrollY;
+    setIsScrolled(scrollTop > 0);
+  };
 
-      if (width > 1200 && width <= 1920) {
-        const y = window.scrollY;
-        setIsScrolled(y > 0);
-      } else {
-        if (scrollContainerRef.current) {
-          const top = scrollContainerRef.current.scrollTop;
-          setIsScrolled(top > 0);
-        }
-      }
-    };
+  // PC: window 기준, 모바일 or 내부 스크롤 컨테이너 둘 다 감지
+  window.addEventListener("scroll", handleScroll);
+  scrollContainerRef.current?.addEventListener("scroll", handleScroll);
 
-    window.addEventListener("scroll", handleScroll);
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.addEventListener("scroll", handleScroll);
-    }
+  handleScroll(); // 초기 감지
 
-    handleScroll(); // 초기 감지
+  return () => {
+    window.removeEventListener("scroll", handleScroll);
+    scrollContainerRef.current?.removeEventListener("scroll", handleScroll);
+  };
+}, [scrollContainerRef]);
 
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      if (scrollContainerRef.current) {
-        scrollContainerRef.current.removeEventListener("scroll", handleScroll);
-      }
-    };
-  }, [scrollContainerRef]);
 
   const navHeight = isMobileNav ? 65 : 50;
   const headerHeight = isMobileNav ? 52 : 80.56;
@@ -76,10 +66,16 @@ const Navigation = ({ isMobileNav, mobileScale, scrollContainerRef }) => {
               style={{
                 transition: "opacity 0.3s ease",
                 opacity: isScrolled ? 0 : 1,
+                width: "100vw",
               }}
             />
           )}
-          <NavMenu isScrolled={isScrolled} />
+          <NavMenu
+            isScrolled={isScrolled}
+            style={{
+              width: "100vw",
+            }}
+          />
         </>
       )}
     </div>
@@ -101,7 +97,7 @@ const Layout = () => {
 
   const navHeight = isMobileNav ? 65 : 50;
   const headerHeight = isMobileNav ? 52 : 80.56;
-  const totalPadding = isMobileNav ? headerHeight + navHeight + 0 : 112;
+  const totalPadding = isMobileNav ? headerHeight + navHeight + 0 : 122;
   const extraPadding =
     !isMobileNav && window.innerWidth > 819 && window.innerWidth <= 1920
       ? 20
@@ -128,8 +124,9 @@ const Layout = () => {
         setScale(screenWidth / 1200);
       } else {
         setIsMobile(false);
-        setScale(screenWidth >= 1920 ? screenWidth / 1920 : 1);
+        setScale(0.85); // 1920px 이상에서 콘텐츠 scale 고정
       }
+      
     };
     window.addEventListener("resize", handleResize);
     handleResize();
@@ -166,9 +163,12 @@ const Layout = () => {
   const OutletWrapper = () => (
     <div ref={outletRef}>
       <Outlet />
-      <div ref={footerRef}>
-        <Footer />
-      </div>
+      {/* 푸터를 1920px 이하에서 OutletWrapper 내부로 복구 */}
+      {window.innerWidth <= 1920 && (
+        <div ref={footerRef}>
+          <Footer />
+        </div>
+      )}
     </div>
   );
 
@@ -204,12 +204,9 @@ const Layout = () => {
             ref={contentRef}
             className="flex justify-center w-full"
             style={{
-              height:
-                isMobile && contentHeight
-                  ? `calc(${contentHeight}px * ${scale})`
-                  : "auto",
-              minHeight: "100vh",
-            }}
+  height: contentHeight ? `${contentHeight * scale}px` : "auto",
+  minHeight: "100vh",
+}}
           >
             <div
               className="flex flex-col w-full"
@@ -224,6 +221,29 @@ const Layout = () => {
             </div>
           </div>
         </div>
+
+        {/* 푸터: 1920px 초과에서 배경색 확장 */}
+        {!isLoading && window.innerWidth > 1920 && (
+          <div
+            style={{
+              width: "100vw",
+              backgroundColor: "#3D3D3D",
+              marginLeft: "calc(-50vw + 50%)",
+              zIndex: 50,
+              overflowX: "hidden",
+            }}
+          >
+            <div
+              ref={footerRef}
+              style={{
+                maxWidth: "1920px",
+                margin: "0 auto",
+              }}
+            >
+              <Footer />
+            </div>
+          </div>
+        )}
 
         {/* 로딩 중일 때는 StopBanner 렌더링하지 않음 */}
         {!isLoading && <StopBanner style={{ zIndex: 60 }} />}

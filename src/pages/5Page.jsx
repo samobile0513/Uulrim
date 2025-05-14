@@ -5,7 +5,7 @@ import Character from '../components/5p/2_Character';
 import Autho from '../components/5p/2_Autho';
 import Whatcomp from '../components/5p/4_Whatcomp';
 import PurchaseFromStandardBusiness from '../components/2p/5_PurchaseFromStandardBusiness'; // ⭐ 추가
-import GoodCompaniesSection from '../components/2p/6_GoodCompaniesSection'; // ⭐ 추가
+import GoodCompaniesSection from '../components/5p/5_GoodCompaniesSection'; // ⭐ 추가
 
 
 

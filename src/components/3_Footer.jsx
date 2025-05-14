@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState, useContext } from "react";
 import { ScaleContext } from "./0_Layout";
 import ReactDOM from "react-dom";
+import { useNavigate } from "react-router-dom";
+
 
 const Footer = () => {
   const [scrollY, setScrollY] = useState(0);
@@ -16,6 +18,8 @@ const Footer = () => {
   const [info2Text, setInfo2Text] = useState("");
   const [info3Text, setInfo3Text] = useState("");
   const [isMobile, setIsMobile] = useState(false);
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     const handleResize = () => {
@@ -97,8 +101,19 @@ const Footer = () => {
               window.innerWidth <= 1200 ? "translateX(400px)" : "translateX(0)",
           }}
         >
-          <img src="/footer.svg" alt="footer-part1" />
-          <div className="mt-[10px]" />
+          <img src="/footertitle.svg" alt="footer-part1" />
+          <div className="mt-[20px]" />
+          <div
+            onClick={() => navigate("/5page")}
+            className="hover:opacity-80 transition-all duration-300 cursor-pointer"
+          >
+            <img src="/footerc.svg" alt="footer-part1" />
+          </div>
+          <div className="mt-[20px]" />
+          <img src="/footerc2.svg" alt="footer-part1" />
+          <div className="mt-[20px]" />
+          <img src="/footerinfo.svg" alt="footer-part1" />
+          <div className="mt-[30px]" />
 
           <div className="mt-[0px] flex items-center">
             <div

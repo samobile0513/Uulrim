@@ -4,7 +4,6 @@ import DisabilityEmploymentSection from '../components/2p/2_DisabilityEmployment
 import RelatedEmploymentSection from '../components/2p/3_RelatedEmploymentSection';
 import EmploymentEffectSection from '../components/2p/4_EmploymentEffectSection';
 import PurchaseFromStandardBusiness from '../components/2p/5_PurchaseFromStandardBusiness';
-import GoodCompaniesSection from '../components/2p/6_GoodCompaniesSection';
 
 const SecondPage = () => {
   return (
@@ -14,7 +13,6 @@ const SecondPage = () => {
       <RelatedEmploymentSection />
       <EmploymentEffectSection />
       <PurchaseFromStandardBusiness />
-      <GoodCompaniesSection />
     </>
   );
 };

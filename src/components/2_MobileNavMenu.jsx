@@ -40,16 +40,11 @@ const MobileNavMenu = ({ mobileScale, style, isScrolled }) => {
           ...style
         }}
       >
-        <Link
-          to="/"
-          className="transition-all duration-300 hover:brightness-110"
-        >
           <img
             src="/Mtitle.svg"
             alt="logo"
             style={{ width: "90px", height: `${logoHeight}px` }}
           />
-        </Link>
         <button
           onClick={() => setOpen(true)}
           style={{

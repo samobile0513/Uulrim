@@ -9,7 +9,6 @@ import DisabilityEmploymentSection from '../components/2p/2_DisabilityEmployment
 import RelatedEmploymentSection from '../components/2p/3_RelatedEmploymentSection';
 import EmploymentEffectSection from '../components/2p/4_EmploymentEffectSection'; // ⭐ 추가
 import PurchaseFromStandardBusiness from '../components/2p/5_PurchaseFromStandardBusiness'; // ⭐ 추가
-import GoodCompaniesSection from '../components/2p/6_GoodCompaniesSection'; // ⭐ 추가
 
 
 
@@ -27,7 +26,6 @@ const SecondPage = () => {
         <RelatedEmploymentSection />
         <EmploymentEffectSection /> {/* 여기 추가 */}
         <PurchaseFromStandardBusiness /> {/* 여기 추가 */}
-        <GoodCompaniesSection /> {/* 여기 추가 */}
     </>
   );
 };
