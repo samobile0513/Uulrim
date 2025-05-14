@@ -60,7 +60,7 @@ const AboutSection = () => {
           <div className="mt-[40px]" />
           <img src="/1p/1_37.svg" alt="1_37" className="mx-auto" />
           <div className="mt-[101px]" />
-          <img src="/1p/1_38.svg" alt="1_38" className="mx-auto" />
+          <img src="/1p/1_38.png" alt="1_38" className="mx-auto" />
         </div>
       </div>
 

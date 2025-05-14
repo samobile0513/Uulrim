@@ -14,39 +14,34 @@ const Navigation = ({ isMobileNav, mobileScale, scrollContainerRef }) => {
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
-  const handleScroll = () => {
-    const width = window.innerWidth;
+    const handleScroll = () => {
+      const width = window.innerWidth;
 
-    if (width > 1200 && width <= 1920) {
-      // ✅ 이 구간만 window.scrollY 사용
-      const y = window.scrollY;
-      setIsScrolled(y > 0);
-    } else {
-      // ✅ 나머지는 기존 scrollContainerRef 사용
-      if (scrollContainerRef.current) {
-        const top = scrollContainerRef.current.scrollTop;
-        setIsScrolled(top > 0);
+      if (width > 1200 && width <= 1920) {
+        const y = window.scrollY;
+        setIsScrolled(y > 0);
+      } else {
+        if (scrollContainerRef.current) {
+          const top = scrollContainerRef.current.scrollTop;
+          setIsScrolled(top > 0);
+        }
       }
-    }
-  };
+    };
 
-  window.addEventListener("scroll", handleScroll);
-  if (scrollContainerRef.current) {
-    scrollContainerRef.current.addEventListener("scroll", handleScroll);
-  }
-
-  handleScroll(); // 초기 감지
-
-  return () => {
-    window.removeEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll);
     if (scrollContainerRef.current) {
-      scrollContainerRef.current.removeEventListener("scroll", handleScroll);
+      scrollContainerRef.current.addEventListener("scroll", handleScroll);
     }
-  };
 
+    handleScroll(); // 초기 감지
 
-}, [scrollContainerRef]);
-
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (scrollContainerRef.current) {
+        scrollContainerRef.current.removeEventListener("scroll", handleScroll);
+      }
+    };
+  }, [scrollContainerRef]);
 
   const navHeight = isMobileNav ? 65 : 50;
   const headerHeight = isMobileNav ? 52 : 80.56;
@@ -90,7 +85,6 @@ const Navigation = ({ isMobileNav, mobileScale, scrollContainerRef }) => {
     </div>
   );
 };
-
 
 const Layout = () => {
   const [scale, setScale] = useState(1);
@@ -145,7 +139,7 @@ const Layout = () => {
   useEffect(() => {
     if (isMobile) {
       setIsLoading(true);
-      const timer = setTimeout(() => setIsLoading(false), 0);
+      const timer = setTimeout(() => setIsLoading(false), 3000);
       return () => clearTimeout(timer);
     }
   }, [isMobile]);
@@ -186,11 +180,14 @@ const Layout = () => {
   return (
     <ScaleContext.Provider value={scale}>
       <div className="min-h-screen flex flex-col overflow-hidden">
-        <Navigation
-          isMobileNav={isMobileNav}
-          mobileScale={mobileScale}
-          scrollContainerRef={scrollContainerRef}
-        />
+        {/* 로딩 중일 때는 Navigation 렌더링하지 않음 */}
+        {!isLoading && (
+          <Navigation
+            isMobileNav={isMobileNav}
+            mobileScale={mobileScale}
+            scrollContainerRef={scrollContainerRef}
+          />
+        )}
 
         <div
           ref={scrollContainerRef}
@@ -199,8 +196,8 @@ const Layout = () => {
             minHeight: "100vh",
             height: "100vh",
             ...scrollbarHideStyle,
-            paddingTop: `${totalPadding + extraPadding}px`,
-            overflowY: "auto", // ✅ 스크롤 활성화
+            paddingTop: isLoading ? 0 : `${totalPadding + extraPadding}px`,
+            overflowY: "auto",
           }}
         >
           <div
@@ -228,7 +225,8 @@ const Layout = () => {
           </div>
         </div>
 
-        <StopBanner style={{ zIndex: 60 }} />
+        {/* 로딩 중일 때는 StopBanner 렌더링하지 않음 */}
+        {!isLoading && <StopBanner style={{ zIndex: 60 }} />}
 
         <style jsx>{`
           div {

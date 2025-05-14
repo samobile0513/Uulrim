@@ -5,7 +5,7 @@ const Loading = () => {
   return (
     <div className="loading-container">
       <img
-        src="/B1p/B_title.svg"
+        src="/title.svg"
         alt="Loading Logo"
         className="loading-logo"
       />

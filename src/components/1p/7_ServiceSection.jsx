@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const ServiceSection = () => {
   return (
@@ -12,9 +13,12 @@ const ServiceSection = () => {
         <div className="mt-[150px]" />
         <img src="/1p/1_74.svg" alt="1_74" />
         <div className="mt-[100px]" />
-        <a href="" className="transition-all duration-300 hover:scale-105 hover:brightness-110">
+        <Link
+          to="/survey"
+          className="transition-all duration-300 hover:scale-105 hover:brightness-110"
+        >
           <img src="/1p/1_75.svg" alt="구매 상담 버튼" />
-        </a>
+        </Link>
         <div className="mt-[339px]" />
         <img src="/1p/1_76.svg" alt="1_76" />
         <div className="mt-[237px]" />

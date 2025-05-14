@@ -7,7 +7,7 @@ const ProductSection = () => {
         <img src="/1p/1_61.svg" alt="1_61" />
         <div className="mt-[74px]" />
         <div className="relative flex justify-center w-full">
-          <img src="/1p/1_62.svg" alt="1_62" className="relative left-[20px]" />
+          <img src="/1p/1_62.png" alt="1_62" className="relative left-[20px]" />
         </div>
         <div className="mt-[93px]" />
         <img src="/1p/1_63.svg" alt="1_63" />

@@ -11,7 +11,7 @@ const ProofSection = () => {
         <img src="/1p/1_53.svg" alt="1_53" />
         <div className="mt-[36px]" />
         <div className="relative flex justify-center w-full">
-          <img src="/1p/1_54.svg" alt="1_54" className="relative left-[70px]" />
+          <img src="/1p/1_54.png" alt="1_54" className="relative left-[70px]" />
         </div>
         <div className="mt-[78px]" />
         <img src="/1p/1_55.svg" alt="1_55" />

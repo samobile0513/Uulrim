@@ -10,7 +10,7 @@ const BuySection = () => {
         <div className="mt-[62px]" />
         <img src="/1p/1_43.svg" alt="1_43" />
         <div className="mt-[70px]" />
-        <img src="/1p/1_44.svg" alt="1_44" />
+        <img src="/1p/1_44.png" alt="1_44" />
         <div className="mt-[70px]" />
         <img src="/1p/1_45.svg" alt="1_45" />
         <div className="mt-[154px]" />

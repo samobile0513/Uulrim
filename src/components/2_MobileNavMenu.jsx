@@ -40,11 +40,16 @@ const MobileNavMenu = ({ mobileScale, style, isScrolled }) => {
           ...style
         }}
       >
-        <img
-          src="/Mtitle.svg"
-          alt="logo"
-          style={{ width: "90px", height: `${logoHeight}px` }}
-        />
+        <Link
+          to="/"
+          className="transition-all duration-300 hover:brightness-110"
+        >
+          <img
+            src="/Mtitle.svg"
+            alt="logo"
+            style={{ width: "90px", height: `${logoHeight}px` }}
+          />
+        </Link>
         <button
           onClick={() => setOpen(true)}
           style={{
@@ -71,12 +76,12 @@ const MobileNavMenu = ({ mobileScale, style, isScrolled }) => {
         <div
           className="fixed right-0 bg-[#00A9A4] z-[9999] flex flex-col"
           style={{
-            top: isScrolled ? `${navHeight}px` : `${52 + navHeight}px`, // 네비게이션 바 최상단 기준
+            top: isScrolled ? `${navHeight}px` : `${52 + navHeight}px`,
             width: `${menuWidth}px`,
             height: `calc(${menuHeight} * 2.5)`,
             paddingLeft: "25px",
             paddingRight: "25px",
-            paddingTop: "40px",
+            paddingTop: "80px",
             paddingBottom: 0,
           }}
         >

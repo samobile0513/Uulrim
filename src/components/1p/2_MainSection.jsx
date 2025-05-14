@@ -48,7 +48,7 @@ const MainSection = () => {
 
             <div className="w-full relative flex justify-between">
               <img src="/1p/1_22.svg" className="absolute left-0 top-[58px]" alt="왼쪽" />
-              <img src="/1p/1_23.svg" className="absolute right-0 top-[38px] z-10" alt="오른쪽" />
+              <img src="/1p/1_23.png" className="absolute right-0 top-[38px] z-10" alt="오른쪽" />
             </div>
           </div>
 
