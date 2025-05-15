@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom"; // ✅ 추가
 
 const MainImage = () => {
   const [scale, setScale] = useState(1);
   const [isMobile, setIsMobile] = useState(false);
+  const navigate = useNavigate(); // ✅ 추가
 
   useEffect(() => {
     const handleResize = () => {
@@ -26,11 +28,16 @@ const MainImage = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  const handleClick = () => {
+    navigate("/survey"); // ✅ 클릭 시 이동
+  };
+
   return (
     <div className="w-full flex justify-center bg-white">
       {/* PC는 scale 1, 모바일은 zoom 적용 */}
       <div
-        className="flex flex-col items-center"
+        className="flex flex-col items-center cursor-pointer" // ✅ 클릭 가능 표시
+        onClick={handleClick} // ✅ 클릭 이벤트 연결
         style={{
           zoom: scale,
           paddingTop: "0px",

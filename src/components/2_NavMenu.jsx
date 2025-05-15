@@ -41,19 +41,19 @@ const NavMenu = ({ isScrolled }) => {
         </div>
         <div className="w-[462px]"></div>
         <div className="flex flex-row items-center gap-[20px]">
-          {menus.map((menu, index) => (
-            <Link
-              key={index}
-              to={menu.path}
-              className={`text-[15.78px] cursor-pointer transition-opacity duration-300 whitespace-nowrap ${
-                activeMenu === menu.name
-                  ? "text-primary font-bold border-b-2 border-primary"
-                  : "text-black"
-              }`}
-              style={{ fontFamily: "Paperlogy-5Medium" }}
-            >
-              {menu.name}
-            </Link>
+                  {menus.map((menu, index) => (
+                    <Link
+          key={index}
+          to={menu.path}
+          className={`text-[15.78px] cursor-pointer transition-opacity duration-300 whitespace-nowrap ${
+            activeMenu === menu.name
+              ? "text-primary font-bold border-b-2 border-primary"
+              : "text-black"
+          }`}
+          style={{ fontFamily: "font-5" }} // ✅ 폰트 변경
+        >
+          {menu.name}
+        </Link>
           ))}
         </div>
         <div className="w-[426px]"></div>

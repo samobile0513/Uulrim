@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom'; // Link import
+import { Link } from 'react-router-dom';
 
 const Header = () => {
   return (
@@ -8,7 +8,7 @@ const Header = () => {
         {/* 왼쪽 텍스트 */}
         <span
           className="text-[15px] font-normal text-white"
-          style={{ fontFamily: 'Paperlogy-4Regular' }}
+          style={{ fontFamily: 'font-4' }} // ✅ 폰트 변경
         >
           장애인 고용부담금 감면
         </span>
@@ -16,9 +16,9 @@ const Header = () => {
         {/* 오른쪽 '지금 문의하기' + 아이콘 묶음 */}
         <div className="flex items-center gap-2">
           <Link
-            to="/survey"  // Survey 페이지로 이동
+            to="/survey"
             className="text-[20px] font-bold text-[#FAD53B]"
-            style={{ fontFamily: 'Paperlogy-7Bold' }}
+            style={{ fontFamily: 'font-7' }} // ✅ 폰트 변경
           >
             지금 문의하기
           </Link>
