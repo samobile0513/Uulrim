@@ -1,21 +1,23 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, addDoc } from "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
 import { getAuth, signInAnonymously } from "firebase/auth";
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAYfP66dL2AYciMdSHVaEcn8NTdUwyfxGo",
-  authDomain: "baroshop-5a5af.firebaseapp.com",
-  projectId: "baroshop-5a5af",
-  storageBucket: "baroshop-5a5af.firebasestorage.app",
-  messagingSenderId: "20212866650",
-  appId: "1:20212866650:web:9b439890ecec1b319c8263"
+  apiKey: "AIzaSyDIv-HeXK-CbmXZyqz7ARuG68RhX6bgEKQ",
+  authDomain: "totaladmin-6228c.firebaseapp.com",
+  projectId: "totaladmin-6228c",
+  storageBucket: "totaladmin-6228c.firebasestorage.app",
+  messagingSenderId: "292544643944",
+  appId: "1:292544643944:web:126c12a19f4eee9fc38cdd",
+  measurementId: "G-Q9SLY2G14J"
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 const storage = getStorage(app);
+console.log("🔥 연결된 Firebase 프로젝트:", firebaseConfig.projectId); 
 
 signInAnonymously(auth)
   .then(() => {
@@ -25,4 +27,4 @@ signInAnonymously(auth)
     console.error("익명 로그인 실패:", error);
   });
 
-export { db, auth, storage, collection, addDoc };
+export { db, auth, storage }; 

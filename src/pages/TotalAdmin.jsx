@@ -32,12 +32,12 @@ const TotalAdmin = () => {
 
   const ENCRYPTED_USERS = [
     {
-      username: "U2FsdGVkX1+WUzQ3v5Jv5UqTSLiT78mKw3KjrgPHO1E=",
-      password: "U2FsdGVkX19P66/oqea0JSPKcwah6yG8P59h5msAGaA=",
+      username: "U2FsdGVkX19Qz/3Gd6AzdDqtL+uUD/19od49Txjs4AQ=",
+      password: "U2FsdGVkX1/WGHtgt3JJPbOz4mh1do+H9jlB6SZ79yQ=",
     },
     {
-      username: "U2FsdGVkX19CdnBb/QPpKKR7eU9he2i2lJp1UJwRIRM=",
-      password: "U2FsdGVkX194fQRifEFE99Yx50W2N3J4SAWDGgeoC4c=",
+      username: "U2FsdGVkX1/uh17VeSJwRwBTJiZ3oiB0YGgO24HNUw8=",
+      password: "U2FsdGVkX19a7pECs8meIPL97hEkk0T5D/mFM9k64xw=",
     },
   ];
 
@@ -83,7 +83,7 @@ const TotalAdmin = () => {
       const data = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
-        confirmed: doc.data().confirmed ?? false, // 기본값 false
+        confirmed: doc.data().confirmed ?? false,
       }));
       console.log("📦 [fetchData] 불러온 데이터:", data);
       setSubmissions(
@@ -96,8 +96,8 @@ const TotalAdmin = () => {
   };
 
   const handleConfirmChange = async (id, confirmed) => {
+    console.log(`✅ [handleConfirmChange] ID: ${id}, 확인여부: ${confirmed}`);
     try {
-      console.log(`✅ [handleConfirmChange] ID ${id} 확인여부 업데이트: ${confirmed}`);
       const docRef = doc(db, "submissions", id);
       await updateDoc(docRef, { confirmed });
       setSubmissions((prev) =>
@@ -106,7 +106,7 @@ const TotalAdmin = () => {
       console.log(`✅ [handleConfirmChange] ID ${id} 업데이트 성공`);
     } catch (err) {
       console.error("❌ [handleConfirmChange] 업데이트 실패:", err.message);
-      setError(`확인여부 업데이트 실패: ${err.message}`);
+      alert(`확인여부 업데이트 실패: ${err.message}`);
     }
   };
 
@@ -244,7 +244,7 @@ const TotalAdmin = () => {
   };
 
   const handleDeleteSelected = async () => {
-    if (!window.confirm("선택된 항목을 삭제할까요?")) return;
+    if (!window.confirm("선택된 항목을 모두 삭제할까요?")) return;
     try {
       console.log("🗑️ [handleDeleteSelected] 삭제 시도:", selectedIds);
       await Promise.all(
@@ -260,6 +260,30 @@ const TotalAdmin = () => {
     } catch (err) {
       console.error("❌ [handleDeleteSelected] 삭제 실패:", err.message);
       setError(`삭제 중 오류 발생: ${err.message}`);
+    }
+  };
+
+  const handleDeleteSelectedItems = async () => {
+    if (selectedIds.length === 0) {
+      alert("삭제할 항목을 선택해주세요.");
+      return;
+    }
+    if (!window.confirm("선택한 항목을 삭제할까요?")) return;
+    try {
+      console.log("🗑️ [handleDeleteSelectedItems] 선택 삭제 시도:", selectedIds);
+      await Promise.all(
+        selectedIds.map(async (id) => {
+          const docRef = doc(db, "submissions", id);
+          await deleteDoc(docRef);
+          console.log(`✅ [handleDeleteSelectedItems] ID ${id} 삭제 성공`);
+        })
+      );
+      setSelectedIds([]);
+      await fetchData();
+      console.log("✅ [handleDeleteSelectedItems] 데이터 갱신 완료");
+    } catch (err) {
+      console.error("❌ [handleDeleteSelectedItems] 선택 삭제 실패:", err.message);
+      setError(`선택 삭제 중 오류 발생: ${err.message}`);
     }
   };
 
@@ -530,6 +554,12 @@ const TotalAdmin = () => {
           모두삭제
         </button>
         <button
+          onClick={handleDeleteSelectedItems}
+          className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
+        >
+          선택삭제
+        </button>
+        <button
           onClick={handleExport}
           className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition"
         >
@@ -677,9 +707,15 @@ const TotalAdmin = () => {
                     <td className="border-r p-3 text-center">{s.paymentPeriod}</td>
                     <td className="border-r p-3 text-center">{s.discountType}</td>
                     <td className="border-r p-3 text-center">{s.additional}</td>
-                    <td className="border-r p-3 text-center">{s.agreements?.marketing ? "Y" : "-"}</td>
-                    <td className="border-r p-3 text-center">{s.agreements?.thirdParty ? "Y" : "-"}</td>
-                    <td className="border-r p-3 text-center">{new Date(s.timestamp).toLocaleString("ko-KR")}</td>
+                    <td className="border-r p-3 text-center">
+                      {s.agreements?.marketing ? "Y" : "-"}
+                    </td>
+                    <td className="border-r p-3 text-center">
+                      {s.agreements?.thirdParty ? "Y" : "-"}
+                    </td>
+                    <td className="border-r p-3 text-center">
+                      {new Date(s.timestamp).toLocaleString("ko-KR")}
+                    </td>
                     <td className="p-3 text-center">
                       <input
                         type="checkbox"
@@ -697,9 +733,15 @@ const TotalAdmin = () => {
                     <td className="border-r p-3 text-center">{s.joinType}</td>
                     <td className="border-r p-3 text-center">{s.giftType}</td>
                     <td className="border-r p-3 text-center">{s.additional}</td>
-                    <td className="border-r p-3 text-center">{s.agreements?.marketing ? "Y" : "-"}</td>
-                    <td className="border-r p-3 text-center">{s.agreements?.thirdParty ? "Y" : "-"}</td>
-                    <td className="border-r p-3 text-center">{new Date(s.timestamp).toLocaleString("ko-KR")}</td>
+                    <td className="border-r p-3 text-center">
+                      {s.agreements?.marketing ? "Y" : "-"}
+                    </td>
+                    <td className="border-r p-3 text-center">
+                      {s.agreements?.thirdParty ? "Y" : "-"}
+                    </td>
+                    <td className="border-r p-3 text-center">
+                      {new Date(s.timestamp).toLocaleString("ko-KR")}
+                    </td>
                     <td className="p-3 text-center">
                       <input
                         type="checkbox"
@@ -717,8 +759,12 @@ const TotalAdmin = () => {
                     <td className="border-r p-3 text-center">{s.category}</td>
                     <td className="border-r p-3 text-center">{s.businessType}</td>
                     <td className="border-r p-3 text-center">{s.additional}</td>
-                    <td className="border-r p-3 text-center">{s.agreements?.marketing ? "Y" : "-"}</td>
-                    <td className="border-r p-3 text-center">{new Date(s.timestamp).toLocaleString("ko-KR")}</td>
+                    <td className="border-r p-3 text-center">
+                      {s.agreements?.marketing ? "Y" : "-"}
+                    </td>
+                    <td className="border-r p-3 text-center">
+                      {new Date(s.timestamp).toLocaleString("ko-KR")}
+                    </td>
                     <td className="p-3 text-center">
                       <input
                         type="checkbox"
