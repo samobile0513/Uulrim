@@ -33,11 +33,14 @@ const NavMenu = ({ isScrolled }) => {
       <div className="w-full flex items-center">
         <div className="w-[462px]"></div>
         <div className="flex items-center">
-            <img
-              src="/title.svg"
-              alt="어울림"
-              className="h-[30px] min-w-[100px] object-contain"
-            />
+                    <img
+          src="/title.svg"
+          alt="어울림"
+          className="h-[30px] min-w-[100px] object-contain cursor-pointer"
+          onClick={() => {
+            window.location.href = window.location.pathname;
+          }}
+        />
         </div>
         <div className="w-[462px]"></div>
         <div className="flex flex-row items-center gap-[20px]">

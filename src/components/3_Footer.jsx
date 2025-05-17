@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState, useContext } from "react";
 import { ScaleContext } from "./0_Layout";
 import ReactDOM from "react-dom";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 
 const Footer = () => {
@@ -102,15 +102,32 @@ const Footer = () => {
           }}
         >
           <img src="/footertitle.svg" alt="footer-part1" />
-          <div className="mt-[20px]" />
-          <div
-            onClick={() => navigate("/5page")}
-            className="hover:opacity-80 transition-all duration-300 cursor-pointer"
-          >
-            <img src="/footerc.svg" alt="footer-part1" />
-          </div>
-          <div className="mt-[20px]" />
-          <img src="/footerc2.svg" alt="footer-part1" />
+<div className="mt-[20px]" />
+<Link
+  to="/5page"
+  className="hover:opacity-80 transition-opacity duration-300"
+  style={{
+    display: "inline-block", // 또는 block
+    margin: 0,
+    padding: 0,
+    transform: "none",
+  }}
+>
+  <img
+    src="/footerc.svg"
+    alt="footer-part1"
+    style={{
+      display: "block", // ✅ inline-block이면 font baseline 문제 생길 수 있음
+      margin: 0,
+      padding: 0,
+      transform: "none",
+      verticalAlign: "top", // ✅ 줄간격 영향 제거
+    }}
+  />
+</Link>
+
+<div className="mt-[20px]" />
+<img src="/footerc2.svg" alt="footer-part1" />
           <div className="mt-[20px]" />
           <img src="/footerinfo.svg" alt="footer-part1" />
           <div className="mt-[30px]" />

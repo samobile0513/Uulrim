@@ -170,10 +170,16 @@ const Layout = () => {
 
   // 모바일 로딩 처리
   useEffect(() => {
-    if (isMobile) {
+    const hasLoadedBefore = localStorage.getItem("hasLoadedBefore");
+    if (isMobile && !hasLoadedBefore) {
       setIsLoading(true);
-      const timer = setTimeout(() => setIsLoading(false), 1500); // 로딩 시간 단축
+      localStorage.setItem("hasLoadedBefore", "true"); // ✅ 최초 1회 표시 후 저장
+      const timer = setTimeout(() => {
+        setIsLoading(false);
+      }, 3000);
       return () => clearTimeout(timer);
+    } else {
+      setIsLoading(false);
     }
   }, [isMobile]);
 

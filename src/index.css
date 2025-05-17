@@ -83,5 +83,78 @@ body {
 }
 
 html {
-  scroll-behavior: auto !important;
+  scroll-behavior: smooth;
+}
+
+/* ✅ 모든 링크, 클릭 가능한 img, 버튼, div, 링크 내부 img, cursor-pointer div 내부 img에 전역 오버레이 효과 */
+a,
+a:link,
+a:visited,
+button,
+img.cursor-pointer,
+div.clickable,
+a img,
+div.cursor-pointer img {
+  position: relative;
+  transition: all 0.3s ease-in-out;
+}
+
+/* 호버 효과 (데스크톱): 사이즈 확대만 */
+a:hover,
+img.cursor-pointer:hover,
+div.clickable:hover,
+button:hover,
+a:hover img,
+div.cursor-pointer:hover img {
+  transform: scale(1.04); /* 4% 확대 */
+}
+
+/* 클릭/터치 효과 (데스크톱 및 모바일) */
+a:active,
+img.cursor-pointer:active,
+div.clickable:active,
+button:active,
+a:active img,
+div.cursor-pointer:active img {
+  transform: scale(0.99); /* 4% 축소 */
+}
+
+/* 모바일 터치 효과 최적화 */
+@media (max-width: 1200px) {
+  a,
+  img.cursor-pointer,
+  div.clickable,
+  button,
+  a img,
+  div.cursor-pointer img {
+    touch-action: manipulation;
+  }
+  a:focus,
+  a:hover,
+  img.cursor-pointer:focus,
+  img.cursor-pointer:hover,
+  div.clickable:focus,
+  div.clickable:hover,
+  button:focus,
+  button:hover,
+  a:focus img,
+  a:hover img,
+  div.cursor-pointer:focus img,
+  div.cursor-pointer:hover img {
+    transform: scale(1.04); /* 4% 확대 */
+  }
+  a:active,
+  img.cursor-pointer:active,
+  div.clickable:active,
+  button:active,
+  a:active img,
+  div.cursor-pointer:active img {
+    transform: scale(0.99); /* 4% 축소 */
+  }
+}
+
+/* ✅ 6_ProductSection.jsx의 기존 호버 효과 유지 */
+a.custom-link:hover {
+  transform: none !important;
+  filter: none !important;
 }

@@ -40,11 +40,14 @@ const MobileNavMenu = ({ mobileScale, style, isScrolled }) => {
           ...style
         }}
       >
-          <img
-            src="/Mtitle.svg"
-            alt="logo"
-            style={{ width: "90px", height: `${logoHeight}px` }}
-          />
+<img
+  src="/Mtitle.svg"
+  alt="logo"
+  style={{ width: "90px", height: `${logoHeight}px`, cursor: "pointer" }}
+  onClick={() => {
+    window.location.href = window.location.pathname;
+  }}
+/>
         <button
           onClick={() => setOpen(true)}
           style={{
