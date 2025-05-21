@@ -1,8 +1,7 @@
 import React, { useEffect, useRef, useState, useContext } from "react";
 import { ScaleContext } from "./0_Layout";
 import ReactDOM from "react-dom";
-import { Link, useNavigate } from "react-router-dom";
-
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 const Footer = () => {
   const [scrollY, setScrollY] = useState(0);
@@ -19,7 +18,7 @@ const Footer = () => {
   const [info3Text, setInfo3Text] = useState("");
   const [isMobile, setIsMobile] = useState(false);
   const navigate = useNavigate();
-
+  const { pathname } = useLocation();
 
   useEffect(() => {
     const handleResize = () => {
@@ -84,10 +83,25 @@ const Footer = () => {
     }
   }, [isPopupOpenInfo3]);
 
+  const getPaddingBottom = () => {
+    const width = window.innerWidth;
+    if (
+      isMobile &&
+      (pathname === "/" || pathname === "/2page" || pathname === "/3page" || pathname === "/4page" || pathname === "/5page")
+    ) {
+      if (width <= 400) return "pb-[500px]";
+      if (width <= 500) return "pb-[450px]";
+      if (width <= 600) return "pb-[400px]";
+      if (width <= 700) return "pb-[350px]";
+      if (width <= 819) return "pb-[300px]";
+    }
+    return "pb-[50px]"; // 기본값
+  };
+
   return (
     <>
       <div
-        className="w-full flex justify-center overflow-x-visible pt-[50px] pb-[50px]"
+        className={`w-full flex justify-center overflow-x-visible pt-[50px] ${getPaddingBottom()}`}
         style={{ minHeight: adjustedHeight, backgroundColor: "#3D3D3D" }}
       >
         <div
@@ -102,32 +116,32 @@ const Footer = () => {
           }}
         >
           <img src="/footertitle.svg" alt="footer-part1" />
-<div className="mt-[20px]" />
-<Link
-  to="/5page"
-  className="hover:opacity-80 transition-opacity duration-300"
-  style={{
-    display: "inline-block", // 또는 block
-    margin: 0,
-    padding: 0,
-    transform: "none",
-  }}
->
-  <img
-    src="/footerc.svg"
-    alt="footer-part1"
-    style={{
-      display: "block", // ✅ inline-block이면 font baseline 문제 생길 수 있음
-      margin: 0,
-      padding: 0,
-      transform: "none",
-      verticalAlign: "top", // ✅ 줄간격 영향 제거
-    }}
-  />
-</Link>
+          <div className="mt-[20px]" />
+          <Link
+            to="/5page"
+            className="hover:opacity-80 transition-opacity duration-300"
+            style={{
+              display: "inline-block",
+              margin: 0,
+              padding: 0,
+              transform: "none",
+            }}
+          >
+            <img
+              src="/footerc.svg"
+              alt="footer-part1"
+              style={{
+                display: "block",
+                margin: 0,
+                padding: 0,
+                transform: "none",
+                verticalAlign: "top",
+              }}
+            />
+          </Link>
 
-<div className="mt-[20px]" />
-<img src="/footerc2.svg" alt="footer-part1" />
+          <div className="mt-[20px]" />
+          <img src="/footerc2.svg" alt="footer-part1" />
           <div className="mt-[20px]" />
           <img src="/footerinfo.svg" alt="footer-part1" />
           <div className="mt-[30px]" />

@@ -14,16 +14,13 @@ const Navigation = ({ isMobileNav, mobileScale, scrollContainerRef }) => {
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
-    // 스크롤 이벤트 디바운싱 적용
     let timeoutId = null;
     
     const handleScroll = () => {
-      // 이미 타임아웃이 설정되어 있으면 취소
       if (timeoutId) {
         return;
       }
       
-      // 16ms(약 60fps)마다 실행되도록 설정
       timeoutId = setTimeout(() => {
         const scrollTop = 
           scrollContainerRef.current?.scrollTop ?? window.scrollY;
@@ -32,13 +29,12 @@ const Navigation = ({ isMobileNav, mobileScale, scrollContainerRef }) => {
       }, 16);
     };
 
-    // 모바일이면 scrollContainerRef만 사용, 아니면 window 사용
     const scrollElement = isMobileNav && scrollContainerRef.current 
       ? scrollContainerRef.current 
       : window;
     
     scrollElement.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll(); // 초기 감지
+    handleScroll();
 
     return () => {
       if (timeoutId) clearTimeout(timeoutId);
@@ -101,14 +97,13 @@ const Layout = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [isMobileNav, setIsMobileNav] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [contentHeight, setContentHeight] = useState("100vh"); // 기본값 설정
+  const [contentHeight, setContentHeight] = useState("100vh");
   const { pathname } = useLocation();
   const scrollContainerRef = useRef();
   const contentRef = useRef();
   const outletRef = useRef();
   const footerRef = useRef();
 
-  // 메모이제이션된 값들 사용
   const navHeight = isMobileNav ? 65 : 50;
   const headerHeight = isMobileNav ? 52 : 80.56;
   const totalPadding = isMobileNav ? headerHeight + navHeight : 122;
@@ -117,12 +112,10 @@ const Layout = () => {
       ? 20
       : 0;
 
-  // 페이지 변경 시 스크롤 상단으로
   useEffect(() => {
     if (window.__isModalOpen) return;
     if (pathname.includes("surveyform")) return;
     
-    // requestAnimationFrame 사용하여 최적화
     if (scrollContainerRef.current) {
       requestAnimationFrame(() => {
         scrollContainerRef.current.scrollTop = 0;
@@ -130,9 +123,7 @@ const Layout = () => {
     }
   }, [pathname]);
 
-  // 화면 크기 변경 감지 및 스케일 조정
   useEffect(() => {
-    // 리사이즈 이벤트 디바운싱
     let resizeTimeout = null;
     
     const handleResize = () => {
@@ -154,13 +145,13 @@ const Layout = () => {
           setScale(screenWidth / 1200);
         } else {
           setIsMobile(false);
-          setScale(0.85); // 1920px 이상에서 콘텐츠 scale 고정
+          setScale(0.85);
         }
-      }, 100); // 100ms의 디바운스 시간
+      }, 100);
     };
     
     window.addEventListener("resize", handleResize);
-    handleResize(); // 초기 실행
+    handleResize();
     
     return () => {
       if (resizeTimeout) clearTimeout(resizeTimeout);
@@ -168,12 +159,11 @@ const Layout = () => {
     };
   }, []);
 
-  // 모바일 로딩 처리
   useEffect(() => {
     const hasLoadedBefore = localStorage.getItem("hasLoadedBefore");
     if (isMobile && !hasLoadedBefore) {
       setIsLoading(true);
-      localStorage.setItem("hasLoadedBefore", "true"); // ✅ 최초 1회 표시 후 저장
+      localStorage.setItem("hasLoadedBefore", "true");
       const timer = setTimeout(() => {
         setIsLoading(false);
       }, 3000);
@@ -183,14 +173,20 @@ const Layout = () => {
     }
   }, [isMobile]);
 
-  // 컨텐츠 높이 업데이트 최적화
   useEffect(() => {
+    // 페이지별 contentHeight 보정값 설정
+    const pageAdjustments = {
+      "/": 0.125,      // HomePage
+      "/2page": 0.236, // 2page
+      "/3page": 0.242, // 3page
+      "/4page": 0.265, // 4page
+      "/5page": 0.265, // 4page
+    };
+
     const updateContentHeight = () => {
-      // 렌더링 최적화를 위해 requestAnimationFrame 사용
       requestAnimationFrame(() => {
         if (!outletRef.current) return;
         
-        // 실제 필요한 높이 계산
         let totalHeight = 0;
         totalHeight += outletRef.current.getBoundingClientRect().height;
         
@@ -198,29 +194,31 @@ const Layout = () => {
           totalHeight += footerRef.current.getBoundingClientRect().height;
         }
         
-        // 고해상도에서 여백 최소화 - 더 정확한 높이 계산
         const screenWidth = window.innerWidth;
-        let extraSpace = 50; // 기본 여백
+        let extraSpace = 50;
         
-        // 3840 해상도 대응
         if (screenWidth > 2560) {
-          extraSpace = 10; // 여백 최소화
+          extraSpace = 10;
         } else if (screenWidth > 1920) {
-          extraSpace = 20; // 중간 규모 여백
+          extraSpace = 20;
         }
         
-        // 높이가 너무 작으면 기본값 사용
         if (totalHeight < window.innerHeight) {
           setContentHeight("100vh");
         } else {
-          setContentHeight(totalHeight + extraSpace);  // 직접 숫자값으로 설정하여 계산 정확도 향상
+          // 페이지별 보정값 적용
+          const adjustment = pageAdjustments[pathname] || 1; // 기본값 1 (기타 페이지)
+          if (adjustment !== 1) {
+            totalHeight *= adjustment;
+          } else {
+            totalHeight += 100; // 기타 페이지의 원본 로직
+          }
+          setContentHeight(totalHeight + extraSpace);
         }
       });
     };
 
-    // ResizeObserver 성능 최적화
     const resizeObserver = new ResizeObserver(() => {
-      // 디바운싱 적용
       if (window.updateHeightTimeout) {
         clearTimeout(window.updateHeightTimeout);
       }
@@ -230,9 +228,8 @@ const Layout = () => {
     if (outletRef.current) resizeObserver.observe(outletRef.current);
     if (footerRef.current) resizeObserver.observe(footerRef.current);
     
-    // 초기 높이 설정
-    setTimeout(updateContentHeight, 100); // 초기 실행 약간 지연
-    window.addEventListener('load', updateContentHeight); // 모든 리소스 로드 후에도 한번 더 확인
+    setTimeout(updateContentHeight, 100);
+    window.addEventListener('load', updateContentHeight);
     
     return () => {
       if (window.updateHeightTimeout) clearTimeout(window.updateHeightTimeout);
@@ -241,10 +238,22 @@ const Layout = () => {
     };
   }, [isMobile, scale, pathname]);
 
+  // 모바일에서 지정 페이지 외부 스크롤 차단
+  useEffect(() => {
+    if (
+      isMobileNav &&
+      (pathname === "/" || pathname === "/2page" || pathname === "/3page" || pathname === "/4page" || pathname === "/5page")
+    ) {
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = "";
+      };
+    }
+  }, [isMobileNav, pathname]);
+
   const OutletWrapper = () => (
     <div ref={outletRef}>
       <Outlet />
-      {/* 푸터를 1920px 이하에서 OutletWrapper 내부로 복구 */}
       {window.innerWidth <= 1920 && (
         <div ref={footerRef}>
           <Footer />
@@ -261,7 +270,6 @@ const Layout = () => {
   return (
     <ScaleContext.Provider value={scale}>
       <div className="min-h-screen flex flex-col overflow-hidden">
-        {/* 로딩 중일 때는 Navigation 렌더링하지 않음 */}
         {!isLoading && (
           <Navigation
             isMobileNav={isMobileNav}
@@ -279,7 +287,6 @@ const Layout = () => {
             ...scrollbarHideStyle,
             paddingTop: isLoading ? 0 : `${totalPadding + extraPadding}px`,
             overflowY: "auto",
-            // 하드웨어 가속 활성화
             transform: "translateZ(0)",
             willChange: "scroll-position",
           }}
@@ -290,7 +297,6 @@ const Layout = () => {
             style={{
               height: typeof contentHeight === 'string' ? contentHeight : `${contentHeight * scale}px`,
               minHeight: "100vh",
-              // 하드웨어 가속 활성화
               transform: "translateZ(0)",
               willChange: "transform",
             }}
@@ -302,7 +308,6 @@ const Layout = () => {
                 transform: `scale(${scale})`,
                 transformOrigin: "top center",
                 minHeight: isMobile ? "100%" : "auto",
-                // 하드웨어 가속 활성화
                 willChange: "transform",
               }}
             >
@@ -311,7 +316,6 @@ const Layout = () => {
           </div>
         </div>
 
-        {/* 푸터: 1920px 초과에서 배경색 확장 */}
         {!isLoading && window.innerWidth > 1920 && (
           <div
             style={{
@@ -334,7 +338,6 @@ const Layout = () => {
           </div>
         )}
 
-        {/* 로딩 중일 때는 StopBanner 렌더링하지 않음 */}
         {!isLoading && <StopBanner style={{ zIndex: 60 }} />}
 
         <style jsx>{`
@@ -362,7 +365,6 @@ const Layout = () => {
         }}
         onWheel={(e) => {
           if (scrollContainerRef.current) {
-            // requestAnimationFrame으로 스크롤 이벤트 최적화
             requestAnimationFrame(() => {
               scrollContainerRef.current.scrollTop += e.deltaY;
             });
