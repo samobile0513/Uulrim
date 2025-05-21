@@ -9,7 +9,7 @@ const CharacterSection = () => {
   useEffect(() => {
     const handleResize = () => {
       const width = window.innerWidth;
-      setScale(width <= 3840 ? 10 : 1);
+      setScale(width <= 1200 ? 2 : 2);
     };
 
     window.addEventListener("resize", handleResize);
@@ -28,7 +28,7 @@ const CharacterSection = () => {
 
   return (
     <div
-      className="w-full flex justify-center overflow-x-visible pt-[30px]"
+      className="w-full flex justify-center overflow-x-visible pt-[0px]"
       style={{ minHeight: adjustedHeight }}
     >
       <div
@@ -40,6 +40,7 @@ const CharacterSection = () => {
         }}
       >
         <img src="/End.svg" alt="5_1" />
+
       </div>
     </div>
   );
