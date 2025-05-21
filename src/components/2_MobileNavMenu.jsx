@@ -76,7 +76,7 @@ const MobileNavMenu = ({ mobileScale, style, isScrolled }) => {
           style={{
             top: isScrolled ? `${navHeight}px` : `${52 + navHeight}px`,
             width: `${menuWidth}px`,
-            height: `calc(${menuHeight} * 2.5)`,
+            height: `calc(${menuHeight} * 3)`,
             paddingLeft: "25px",
             paddingRight: "25px",
             paddingTop: "80px",
