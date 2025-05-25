@@ -227,7 +227,7 @@ const Survey = () => {
                 onClick={() => setIsPopupOpenInfo1(true)}
                 className="text-black font-[Paperlogy] text-[15px] underline cursor-pointer"
               >
-                서비스 이용약관 &gt;
+                서비스 이용약관 &gt; <span className="text-[12px] opacity-80">(필수)</span>
               </span>
             </div>
             <div className="flex items-center gap-2">
@@ -241,7 +241,7 @@ const Survey = () => {
                 onClick={() => setIsPopupOpenInfo2(true)}
                 className="text-black font-[Paperlogy] text-[15px] underline cursor-pointer"
               >
-                개인정보처리방침 &gt;
+                개인정보처리방침 &gt; <span className="text-[12px] opacity-80">(필수)</span>
               </span>
             </div>
             <div className="flex items-center gap-2">
@@ -255,7 +255,7 @@ const Survey = () => {
                 onClick={() => setIsPopupOpenInfo3(true)}
                 className="text-black font-[Paperlogy] text-[15px] underline cursor-pointer"
               >
-                마케팅 정보수신 동의 &gt;
+                마케팅 정보수신 동의 &gt; <span className="text-[12px] opacity-65">(선택)</span>
               </span>
             </div>
             <div className="flex items-center gap-2">
